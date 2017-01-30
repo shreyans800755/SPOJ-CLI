@@ -5,12 +5,12 @@ This tool provides facility to use some of features of spoj.com using command li
 
 _This tool is currently under progress._
 
-##Task:
+## Features:
 - [ ] Storing Login Credentials
 - [ ] Fetch the question details like:
 	- [ ] #solvers
 	- [ ] #points that can be achieved by solving this question
-- [ ] Fetch the question
+- [ ] Fetch the question details
 	- [ ] using question number
 	- [ ] using question short-name
 	- [ ] using question long-name
