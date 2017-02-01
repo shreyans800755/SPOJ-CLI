@@ -1,6 +1,6 @@
 from optparse import OptionParser
 
-class parser:
+class Parser:
     """
     To parse options
     """

@@ -1,14 +1,20 @@
+#!/usr/bin/env python
+
 __author__ = 'shreyans800755'
 
 import sys
-import op
-import scrapper
+import OP
+import Scrapper
 
 if __name__ == '__main__':
-    parser = op.parser()
+    parser = OP.Parser()
     (options, args) = parser.getOptions()
+    import pdb
+    pdb.set_trace()
     if options.prob:
         prob = options.prob.upper()
-        desc = scrapper.SPOJ_scrapper.get_description_from_prob(prob)
-        print 'Points: ', desc[0]
-        print '#Solvers: ', desc[1]
+        try:
+            problem = Scrapper.SPOJ_scrapper.get_description_from_prob(prob)
+            problem.printDetails()
+        except Exception as e:
+            print e
