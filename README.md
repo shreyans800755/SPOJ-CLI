@@ -12,8 +12,9 @@ _This tool is currently under progress._
 	- [x] #points that can be achieved by solving this question
 - [ ] Fetch the question details
 	- [ ] using question number
-	- [ ] using question short-name
-	- [ ] using question long-name
+	- [x] using question short-name
+- [ ] Fetch questions list
+    - [ ] sorted by parameter like #solvers
 	- [ ] having particular tag and/or range of points to be achieved
 - [ ] Fetch the details of the submission:
 	- [ ] information about all the submissions for a particular question and particular user
