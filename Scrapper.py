@@ -20,19 +20,30 @@ class SPOJ_scrapper:
         if (details is None):
             raise Exception("Problem code invalid")
 
-        problem = Problem(prob, details[0], details[1])
+        desc = details[0]
+        category_link = details[1]
+        problem = Problem(prob, desc, category_link)
 
-        response = urllib2.urlopen(details[1])
-        html = response.read()
-        soup = BeautifulSoup(html, 'html.parser')
-        prob_link = soup.find('a', href = '/ranks/'+prob)
-        if problem.type != 0:
-            title = prob_link['title']
-            problem.points = title[len('Value '):-len(' points. See the best solutions.')]
-        else:
-            problem.points = 0
-        problem.solvers = prob_link.text
-        return problem
+        current_page = category_link
+        while True:
+            response = urllib2.urlopen(current_page)
+            html = response.read()
+            soup = BeautifulSoup(html, 'html.parser')
+            prob_link = soup.find('a', href = '/ranks/'+prob)
+
+            if prob_link is not None:
+                if problem.type == Problem_type.CLASSICAL:
+                    title = prob_link['title']
+                    problem.points = title[len('Value '):-len(' points. See the best solutions.')]
+                else:
+                    problem.points = 0
+                problem.solvers = prob_link.text
+                return problem
+            else:
+                next_element = SPOJ_scrapper.get_next_url(soup)
+                if next_element is None:
+                    raise Exception("Couldn't find problem link")
+                current_page = SPOJURL + SPOJ_scrapper.get_next_url(soup)['href']
 
     @staticmethod
     def get_prob_desc(prob):
@@ -51,3 +62,7 @@ class SPOJ_scrapper:
         except AttributeError:
             print "Invalid problem: ", prob_url
             return None
+
+    @staticmethod
+    def get_next_url(current_soup):
+        return current_soup.find('a', text='Next', attrs={'class': 'pager_link'})

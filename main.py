@@ -5,12 +5,12 @@ __author__ = 'shreyans800755'
 import sys
 import OP
 import Scrapper
+import pdb
 
 if __name__ == '__main__':
     parser = OP.Parser()
     (options, args) = parser.getOptions()
-    import pdb
-    pdb.set_trace()
+    # pdb.set_trace()
     if options.prob:
         prob = options.prob.upper()
         try:

@@ -7,9 +7,9 @@ _This tool is currently under progress._
 
 ## Features:
 - [ ] Storing Login Credentials
-- [ ] Fetch the question details like:
-	- [ ] #solvers
-	- [ ] #points that can be achieved by solving this question
+- [x] Fetch the question details like:
+	- [x] #solvers
+	- [x] #points that can be achieved by solving this question
 - [ ] Fetch the question details
 	- [ ] using question number
 	- [ ] using question short-name

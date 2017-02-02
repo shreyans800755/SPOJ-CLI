@@ -11,7 +11,7 @@ class Problem:
 
     def printDetails(self):
         print 'Description(Full name): ', self.desc
-        print 'URL: ', self.url
-        print 'Type: ', Problem_type.problem_type_str(self.type)
-        print 'Points: ', self.points
-        print '#Solvers: ', self.solvers
+        print 'URL:', self.url
+        print 'Type:', Problem_type.problem_type_str(self.type)
+        print 'Points:', self.points
+        print '#Solvers:', self.solvers
