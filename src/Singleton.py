@@ -5,8 +5,9 @@ class Singleton:
 
     def __init__(self, decorated):
         self._decorated = decorated
+        self._instance = None
 
-    def Instance(self):
+    def instance(self):
         try:
             return self._decorated
         except AttributeError:

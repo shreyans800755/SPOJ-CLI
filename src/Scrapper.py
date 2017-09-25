@@ -1,23 +1,19 @@
-from Singleton import Singleton
-import urllib2
+from urllib.request import urlopen
+from urllib.error import HTTPError
 from bs4 import BeautifulSoup
-import re
 
-from ProblemType import Problem_type
+from ProblemType import ProblemType
 from Problem import Problem
+import URLutil
 
-CLASSICPROBURL = 'http://www.spoj.com/problems/classical/'
-PROBURL = 'http://www.spoj.com/problems/'
-SPOJURL = 'http://www.spoj.com'
 
-# @Singleton
-class SPOJ_scrapper:
+class SPOJScrapper:
 
     @staticmethod
-    def get_description_from_prob(prob):
-        details = SPOJ_scrapper.get_prob_desc(prob)
+    def get_problem(prob):
+        details = SPOJScrapper.get_prob_desc(prob)
         # print details
-        if (details is None):
+        if details is None:
             raise Exception("Problem code invalid")
 
         desc = details[0]
@@ -26,43 +22,58 @@ class SPOJ_scrapper:
 
         current_page = category_link
         while True:
-            response = urllib2.urlopen(current_page)
+            response = urlopen(current_page)
             html = response.read()
             soup = BeautifulSoup(html, 'html.parser')
             prob_link = soup.find('a', href = '/ranks/'+prob)
 
             if prob_link is not None:
-                if problem.type == Problem_type.CLASSICAL:
-                    title = prob_link['title']
-                    problem.points = title[len('Value '):-len(' points. See the best solutions.')]
-                else:
-                    problem.points = 0
-                problem.solvers = prob_link.text
+                SPOJScrapper.set_points_and_solvers(problem, prob_link)
                 return problem
             else:
-                next_element = SPOJ_scrapper.get_next_url(soup)
+                next_element = SPOJScrapper.get_next_url(soup)
                 if next_element is None:
                     raise Exception("Couldn't find problem link")
-                current_page = SPOJURL + SPOJ_scrapper.get_next_url(soup)['href']
+                current_page = URLutil.SPOJURL + SPOJScrapper.get_next_url(soup)['href']
+
+    @staticmethod
+    def get_problem_from_id(probid):
+        for category in range(1, len(ProblemType.types)):
+            category_link = URLutil.get_problems_url(category)
+            current_page = category_link
+            while True:
+                response = urlopen(current_page)
+                html = response.read()
+                soup = BeautifulSoup(html, 'html.parser')
+                # TODO: Complete this method
 
     @staticmethod
     def get_prob_desc(prob):
-        prob_url = PROBURL + prob
+        problem_url = URLutil.PROBURL + prob
         try:
-            response = urllib2.urlopen(prob_url)
+            response = urlopen(problem_url)
             html = response.read()
             soup = BeautifulSoup(html, 'html.parser')
-            name = soup.find('h2', attrs={'id':'problem-name'}).text.strip()
+            name = soup.find('h2', attrs = {'id':'problem-name'}).text.strip()
             desc = name[name.find('-')+2:]
-            category_link = soup.find('ol', attrs={'class':'breadcrumb'}).findAll('li')[1].find('a')
-            return desc, SPOJURL + category_link['href']
-        except urllib2.HTTPError:
-            print "Can't reach the problem page"
+            category_link = soup.find('ol', attrs = {'class':'breadcrumb'}).findAll('li')[1].find('a')
+            return desc, URLutil.SPOJURL + category_link['href']
+        except HTTPError:
+            print("Can't reach the problem page")
             return None
         except AttributeError:
-            print "Invalid problem: ", prob_url
+            print("Invalid problem: ", problem_url)
             return None
 
     @staticmethod
     def get_next_url(current_soup):
         return current_soup.find('a', text='Next', attrs={'class': 'pager_link'})
+
+    @staticmethod
+    def set_points_and_solvers(problem, prob_link):
+        if problem.type == ProblemType.CLASSICAL:
+            title = prob_link['title']
+            problem.points = title[len('Value '):-len(' points. See the best solutions.')]
+        else:
+            problem.points = 0
+        problem.solvers = prob_link.text

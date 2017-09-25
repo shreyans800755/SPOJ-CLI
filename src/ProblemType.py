@@ -1,4 +1,4 @@
-class Problem_type:
+class ProblemType:
     types = ['', 'CLASSICAL', 'CHALLENGE', 'PARTIAL', 'TUTORIAL', 'RIDDLE', 'BASICS']
 
     CLASSICAL = 1
@@ -9,12 +9,12 @@ class Problem_type:
     BASICS = 6
 
     @staticmethod
-    def problem_type_str(type):
-        return Problem_type.types[type]
+    def get_type_str(type):
+        return ProblemType.types[type]
 
     @staticmethod
     def get_type(type_str):
-        for i in range(1, len(Problem_type.types)):
-            if Problem_type.types[i] in type_str.upper():
+        for i in range(1, len(ProblemType.types)):
+            if ProblemType.types[i] in type_str.upper():
                 return i
         return 0

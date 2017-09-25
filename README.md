@@ -15,7 +15,9 @@ _This tool is currently under progress._
 	- [x] using question short-name
 - [ ] Fetch questions list
     - [ ] sorted by parameter like #solvers
-	- [ ] having particular tag and/or range of points to be achieved
+    - [ ] get problems using category
+	- [ ] having particular tag
+	- [ ] achieving points between given two numbers
 - [ ] Fetch the details of the submission:
 	- [ ] information about all the submissions for a particular question and particular user
 	- [ ] information about all the submissions of a particular user
